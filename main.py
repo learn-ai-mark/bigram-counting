@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 class BigramModel:
     #can chose from words or characters as tokens
-    def __init__(self, dataset, mode="words"):
+    def __init__(self, dataset, mode="characters"):
         self.dataset = dataset
         self.dataset, self.token2index, self.index2token = self.tokenize(self.dataset, mode)
         self.probMatrix = self.count(self.dataset, mode)
@@ -62,12 +62,23 @@ class BigramModel:
                 i += 1
                 if token == '.':
                     break
-            output.append(' '.join(generated))
+            output.append(''.join(generated))
         return set(output)
 
+def processFbDataset():
+    with open('PH.csv', 'r') as f:
+        dataset = f.readlines()
+    dataset = [data.strip().split(',') for data in dataset]
+    firstNames = [data[0] for data in dataset]
+    lastNames = [data[1] for data in dataset]
+    return dataset, firstNames, lastNames
+
 if __name__ == '__main__':
-    dataset = ('have you eaten .yet', 'i dont think so', 'are you sure', 'actually i am not')
+    # dataset = ('have you eaten .yet', 'i dont think so', 'are you sure', 'actually i am not')
     # names = ('John', 'Jane', 'Jack', 'Janice')
-    bigram = BigramModel(dataset)
+    _, firstNames, lastNames = processFbDataset()
+    bigram = BigramModel(lastNames)
     # bigram = BigramModel(names, mode="characters")
-    print(bigram.inference(10))
+    output = bigram.inference(20)
+    for i in output:
+        print(i)
