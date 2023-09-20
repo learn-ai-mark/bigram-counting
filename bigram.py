@@ -10,9 +10,9 @@ class BigramModel:
         self.probMatrix = self.count(self.dataset, mode)
 
     def cleanDataset(self, dataset):
-        def removePunctuation(sentence):
-            return re.sub(r'[^\w\s]', '', sentence)
-        return [removePunctuation(sentence) for sentence in dataset]
+        def containsNonRomanAlphabet(data):
+            return not re.match(r'^[a-zA-Z\s]*$', data)
+        return [data for data in dataset if data != '' and not containsNonRomanAlphabet(data)]
 
     def tokenize(self, dataset, mode):
         dataset = self.cleanDataset(dataset)
