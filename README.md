@@ -1,12 +1,13 @@
-# Bigram Language Model using torch.tensor
+# Bigram and Trigram Language Model using torch.tensor
 
-This is a script that implements simple Bigram Model that generates Filipino names using data from a [Facebook leak in 2021](https://www.businessinsider.com/stolen-data-of-533-million-facebook-users-leaked-online-2021-4).
+This is a script that implements simple Bigram/Trigram Model that generates Filipino names using data from a [Facebook leak in 2021](https://www.businessinsider.com/stolen-data-of-533-million-facebook-users-leaked-online-2021-4).
 
-A bigram model used to generate sequences of text based on the probability of observing one token (word or character) following another token in a given dataset. I used counting to calculate the probability of the next token (no neural networks here!).
+A bigram/trigram model used to generate sequences of text based on the probability of observing one token (word or character) following 2/3 tokens in a given dataset. I used counting to calculate the probability of the next token (no neural networks here!).
 
 ## USAGE
 
-The main.py file generates 20 names by default from the Filipino names dataset.
+The ?gram.py files generates 20 names by default from the Filipino names dataset.
+You can change the main function to generate first names or lastnames, you can also use your own dataset, you can also change the token type to "words" to generate words instead of characters.
 
 ## DATA SOURCE
 

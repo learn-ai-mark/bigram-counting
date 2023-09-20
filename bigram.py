@@ -81,4 +81,4 @@ if __name__ == '__main__':
     # bigram = BigramModel(names, mode="characters")
     output = bigram.inference(20)
     for i in output:
-        print(i)
+        print(i[1:-1])
