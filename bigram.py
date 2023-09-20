@@ -47,7 +47,6 @@ class BigramModel:
 
         sum = torch.sum(count, dim = 1, keepdim=True)
         probMatrix = (count+smoothing) / sum
-        print(probMatrix)
         return probMatrix
 
     def inference(self, num):
@@ -63,7 +62,6 @@ class BigramModel:
                 token = self.index2token[tokenIndex]
 
                 logProb =  torch.log(self.probMatrix[index][tokenIndex])
-                # print(generated[i]+token, self.probMatrix[index][tokenIndex], logProb)
                 negativeLogLikelihood += logProb
                 generated.append(token)
 
@@ -90,7 +88,10 @@ if __name__ == '__main__':
     bigram = BigramModel(lastNames)
     # bigram = BigramModel(names, mode="characters")
 
-    #output is (generated name, negative log likelihood)
+    #output is (generated name, negative log likelihood (lower the better))
     output = bigram.inference(20)
+    print(f'{"Name":<20} {"Negative Log Likelihood":<20}')
     for i in output:
-        print(i)
+        name = i[0][1:-1]
+        nll = i[1]
+        print(f'{name:<20} {nll:<20}')
