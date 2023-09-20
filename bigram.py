@@ -12,7 +12,7 @@ class BigramModel:
     def cleanDataset(self, dataset):
         def containsNonRomanAlphabet(data):
             return not re.match(r'^[a-zA-Z\s]*$', data)
-        return [data for data in dataset if data != '' and not containsNonRomanAlphabet(data)]
+        return [data.lower() for data in dataset if data != '' and not containsNonRomanAlphabet(data)]
 
     def tokenize(self, dataset, mode):
         dataset = self.cleanDataset(dataset)
@@ -25,7 +25,7 @@ class BigramModel:
                 tokens.extend(set(data))
 
         tokens.append('.')
-        tokens = set(tokens)
+        tokens = sorted(set(tokens))
         token2index = {tokens: i for i, tokens in enumerate(tokens)}
         index2token = {i: tokens for i, tokens in enumerate(token2index)}
 
