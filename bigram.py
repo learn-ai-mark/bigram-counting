@@ -31,7 +31,7 @@ class BigramModel:
 
         return dataset, token2index, index2token
 
-    def count(self, dataset, mode):
+    def count(self, dataset, mode, smoothing=1):
         bigrams = {}
         for data in dataset:
             data = ('. ' + data + ' .').split() if (mode == "words") else list('.' + data+ '.')
@@ -46,7 +46,8 @@ class BigramModel:
             count[index1, index2] = bigrams[key]
 
         sum = torch.sum(count, dim = 1, keepdim=True)
-        probMatrix = count / sum
+        probMatrix = (count+smoothing) / sum
+        print(probMatrix)
         return probMatrix
 
     def inference(self, num):
