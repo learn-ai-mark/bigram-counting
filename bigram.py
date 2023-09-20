@@ -51,18 +51,27 @@ class BigramModel:
 
     def inference(self, num):
         output = []
+        negativeLogLikelihoods = []
         for j in range(num):
             generated = ['.']
             i = 0
+            negativeLogLikelihood = 0
             while True:
                 index = self.token2index[generated[i]]
                 tokenIndex = torch.multinomial(self.probMatrix[index], 1, replacement=True).item()
                 token = self.index2token[tokenIndex]
+
+                logProb =  torch.log(self.probMatrix[index][tokenIndex])
+                # print(generated[i]+token, self.probMatrix[index][tokenIndex], logProb)
+                negativeLogLikelihood += logProb
                 generated.append(token)
+
                 i += 1
                 if token == '.':
                     break
-            output.append(''.join(generated))
+
+            negativeLogLikelihood = -negativeLogLikelihood/i
+            output.append((''.join(generated), negativeLogLikelihood))
         return set(output)
 
 def processFbDataset():
@@ -79,6 +88,8 @@ if __name__ == '__main__':
     _, firstNames, lastNames = processFbDataset()
     bigram = BigramModel(lastNames)
     # bigram = BigramModel(names, mode="characters")
+
+    #output is (generated name, negative log likelihood)
     output = bigram.inference(20)
     for i in output:
-        print(i[1:-1])
+        print(i)
